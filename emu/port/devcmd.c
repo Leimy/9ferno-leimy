@@ -109,7 +109,7 @@ cmdgen(Chan *c, char *name, Dirtab *d, int nd, int s, Dir *dp)
 			devdir(c, q, "cmd", 0, eve, DMDIR|0555, dp);
 			break;
 		default:
-			panic("cmdgen %llux", c->qid.path);
+			ipanic("cmdgen %llux", c->qid.path);
 		}
 		return 1;
 	}

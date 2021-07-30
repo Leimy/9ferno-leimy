@@ -324,7 +324,7 @@ newproto(char *name, int type, int maxconv)
 	p->ipproto = type+1;	/* temporary */
 	p->nc = maxconv;
 	if(Fsproto(ipfs[0], p))
-		panic("can't newproto %s", name);
+		ipanic("can't newproto %s", name);
 }
 
 void
@@ -332,7 +332,7 @@ ipinit(void)
 {
 	ipfs[0] = malloc(sizeof(Fs));
 	if(ipfs[0] == nil)
-		panic("no memory for IP stack");
+		ipanic("no memory for IP stack");
 
 	newproto("udp", S_UDP, 64);
 	newproto("tcp", S_TCP, 2048);
@@ -1100,7 +1100,7 @@ Fsproto(Fs *f, Proto *p)
 	p->qid.path = QID(f->np, 0, Qprotodir);
 	p->conv = malloc(sizeof(Conv*)*(p->nc+1));
 	if(p->conv == nil)
-		panic("Fsproto");
+		ipanic("Fsproto");
 
 	p->x = f->np;
 	f->p[f->np++] = p;

@@ -676,7 +676,7 @@ fspath(Cname *c, char *name, char *path)
 	int n;
 
 	if(c->len+strlen(name) >= MAXPATH)
-		panic("fspath: name too long");
+		ipanic("fspath: name too long");
 	memmove(path, c->s, c->len);
 	n = c->len;
 	if(path[n-1] != '/')

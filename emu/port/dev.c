@@ -22,7 +22,7 @@ devno(int c, int user)
 			return i;
 	}
 	if(user == 0)
-		panic("devno %C 0x%ux", c, c);
+		ipanic("devno %C 0x%ux", c, c);
 
 	return -1;
 }
@@ -99,7 +99,7 @@ devclone(Chan *c)
 	Chan *nc;
 
 	if(c->flag & COPEN)
-		panic("clone of open file type %C\n", devtab[c->type]->dc);
+		ipanic("clone of open file type %C\n", devtab[c->type]->dc);
 
 	nc = newchan();
 	nc->type = c->type;

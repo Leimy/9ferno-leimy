@@ -137,7 +137,7 @@ int		limbosleep(ulong);
 vlong	osusectime(void);
 Block*	packblock(Block*);
 Block*	padblock(Block*, int);
-void		panic(char*, ...);
+void		ipanic(char*, ...);
 Cmdbuf*		parsecmd(char*, int);
 void		pexit(char*, int);
 void		pgrpcpy(Pgrp*, Pgrp*);

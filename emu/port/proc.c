@@ -37,7 +37,7 @@ Sleep(Rendez *r, int (*f)(void*), void *arg)
 		unlock(&r->l);
 	}else{
 		if(r->p != nil)
-			panic("double sleep pc=0x%lux %s[%lud] %s[%lud] r=0x%lux\n", getcallerpc(&r), r->p->text, r->p->pid, up->text, up->pid, r);
+			ipanic("double sleep pc=0x%lux %s[%lud] %s[%lud] r=0x%lux\n", getcallerpc(&r), r->p->text, r->p->pid, up->text, up->pid, r);
 
 		r->p = up;
 		unlock(&r->l);

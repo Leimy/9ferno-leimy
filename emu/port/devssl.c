@@ -196,7 +196,7 @@ static void
 sslinit(void)
 {
 	if((dstate = malloc(sizeof(Dstate*) * maxdstate)) == 0)
-		panic("sslinit");
+		ipanic("sslinit");
 	alglistinit();
 }
 
@@ -246,7 +246,7 @@ sslopen(Chan *c, int omode)
 
 	switch(TYPE(c->qid)) {
 	default:
-		panic("sslopen");
+		ipanic("sslopen");
 	case Qtopdir:
 	case Qconvdir:
 		if(omode != OREAD)
@@ -410,7 +410,7 @@ consume(Block **l, uchar *p, int n)
 		b->rp += i;
 		p += i;
 		if(BLEN(b) < 0)
-			panic("consume");
+			ipanic("consume");
 		if(BLEN(b))
 			break;
 		*l = b->next;
@@ -454,12 +454,12 @@ qtake(Block **l, int n, int discard)
 			b->wp -= i;
 			b->next = 0;
 			if(BLEN(b) < 0)
-				panic("qtake");
+				ipanic("qtake");
 			return first;
 		} else
 			n -= i;
 		if(BLEN(b) < 0)
-			panic("qtake");
+			ipanic("qtake");
 	}
 	*l = 0;
 	return first;
@@ -477,7 +477,7 @@ sslbread(Chan *c, long n, ulong offset)
 	USED(offset);
 	s.s = dstate[CONV(c->qid)];
 	if(s.s == 0)
-		panic("sslbread");
+		ipanic("sslbread");
 	if(s.s->state == Sincomplete)
 		error(Ebadusefd);
 
@@ -634,7 +634,7 @@ sslbwrite(Chan *c, Block *b, ulong offset)
 	bb.b = b;
 	s.s = dstate[CONV(c->qid)];
 	if(s.s == 0)
-		panic("sslbwrite");
+		ipanic("sslbwrite");
 	if(s.s->state == Sincomplete){
 		freeb(b);
 		error(Ebadusefd);
@@ -940,7 +940,7 @@ alglistinit(void)
 		n += strlen(e->name) + 1;
 	encalgs = malloc(n);
 	if(encalgs == nil)
-		panic("sslinit");
+		ipanic("sslinit");
 	n = 0;
 	for(e = encrypttab; e->name != nil; e++){
 		strcpy(encalgs+n, e->name);
@@ -956,7 +956,7 @@ alglistinit(void)
 		n += strlen(h->name) + 1;
 	hashalgs = malloc(n);
 	if(hashalgs == nil)
-		panic("sslinit");
+		ipanic("sslinit");
 	n = 0;
 	for(h = hashtab; h->name != nil; h++){
 		strcpy(hashalgs+n, h->name);
@@ -979,7 +979,7 @@ sslwrite(Chan *c, void *a, long n, vlong offset)
 
 	s.s = dstate[CONV(c->qid)];
 	if(s.s == 0)
-		panic("sslwrite");
+		ipanic("sslwrite");
 
 	t = TYPE(c->qid);
 	if(t == Qdata){
@@ -1015,7 +1015,7 @@ sslwrite(Chan *c, void *a, long n, vlong offset)
 
 	switch(t){
 	default:
-		panic("sslwrite");
+		ipanic("sslwrite");
 	case Qsecretin:
 		setsecret(&s.s->in, a, n);
 		goto out;
@@ -1311,7 +1311,7 @@ checkdigestb(Dstate *s, Block *inb)
 	for(b = inb; b; b = b->next){
 		n = BLEN(b) - h;
 		if(n < 0)
-			panic("checkdigestb");
+			ipanic("checkdigestb");
 		(*s->hf)(b->rp + h, n, 0, &ss);
 		h = 0;
 	}

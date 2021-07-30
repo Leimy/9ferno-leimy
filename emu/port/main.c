@@ -198,11 +198,11 @@ savestartup(int argc, char *argv[])
 	rebootargc = argc;
 	rebootargv = malloc((argc+1)*sizeof(char*));
 	if(rebootargv == nil)
-		panic("can't save startup args");
+		ipanic("can't save startup args");
 	for(i = 0; i < argc; i++) {
 		rebootargv[i] = strdup(argv[i]);
 		if(rebootargv[i] == nil)
-			panic("can't save startup args");
+			ipanic("can't save startup args");
 	}
 	rebootargv[i] = nil;
 }
@@ -289,7 +289,7 @@ emuinit(void *imod)
 	chandevinit();
 
 	if(waserror())
-		panic("setting root and dot");
+		ipanic("setting root and dot");
 
 	e->pgrp->slash = namec("#/", Atodir, 0, 0);
 	cnameclose(e->pgrp->slash->name);
@@ -422,7 +422,7 @@ enverror(void)
 }
 
 void
-panic(char *fmt, ...)
+ipanic(char *fmt, ...)
 {
 	va_list arg;
 	char buf[512];
@@ -430,7 +430,7 @@ panic(char *fmt, ...)
 	va_start(arg, fmt);
 	vseprint(buf, buf+sizeof(buf), fmt, arg);
 	va_end(arg);
-	fprint(2, "panic: %s\n", buf);
+	fprint(2, "ipanic: %s\n", buf);
 	if(sflag)
 		abort();
 
@@ -456,7 +456,7 @@ iprint(char *fmt, ...)
 void
 _assert(char *fmt)
 {
-	panic("assert failed: %s", fmt);
+	ipanic("assert failed: %s", fmt);
 }
 
 /*

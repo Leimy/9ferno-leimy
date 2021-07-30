@@ -67,7 +67,7 @@ decref(Ref *r)
 	x = --r->ref;
 	unlock(&r->lk);
 	if(x < 0) 
-		panic("decref, pc=0x%lux", getcallerpc(&r));
+		ipanic("decref, pc=0x%lux", getcallerpc(&r));
 
 	return x;
 }
@@ -122,7 +122,7 @@ kstrdup(char **p, char *s)
 	n = strlen(s)+1;
 	t = kmalloc(n);
 	if(t == nil)
-		panic("kstrdup: no memory");
+		ipanic("kstrdup: no memory");
 	memmove(t, s, n);
 	prev = *p;
 	*p = t;
@@ -298,7 +298,7 @@ cclose(Chan *c)
 		return;
 
 	if(c->flag&CFREE)
-		panic("cclose %lux", getcallerpc(&c));
+		ipanic("cclose %lux", getcallerpc(&c));
 
 	if(decref(&c->r))
 		return;
@@ -1299,7 +1299,7 @@ if(c->umh != nil){
 		}
 
 	default:
-		panic("unknown namec access %d\n", amode);
+		ipanic("unknown namec access %d\n", amode);
 	}
 
 	poperror();

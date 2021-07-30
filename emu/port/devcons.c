@@ -160,13 +160,13 @@ consinit(void)
 {
 	kbdq = qopen(512, 0, nil, nil);
 	if(kbdq == 0)
-		panic("no memory");
+		ipanic("no memory");
 	lineq = qopen(2*1024, 0, nil, nil);
 	if(lineq == 0)
-		panic("no memory");
+		ipanic("no memory");
 	gkbdq = qopen(512, 0, nil, nil);
 	if(gkbdq == 0)
-		panic("no memory");
+		ipanic("no memory");
 	randominit();
 }
 

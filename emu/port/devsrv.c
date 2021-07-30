@@ -205,7 +205,7 @@ srvwalk(Chan *c, Chan *nc, char **name, int nname)
 				if(d->qid.path == w->clone->qid.path)
 					break;
 			if(d == nil)
-				panic("srvwalk");
+				ipanic("srvwalk");
 			if(w->clone == c)
 				pd->ref--;
 		}else

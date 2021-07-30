@@ -106,7 +106,7 @@ poolsetsize(char *s, int size)
 			table.pool[i].maxsize = size;
 			table.pool[i].ressize = size-RESERVED;
 			if(size < RESERVED)
-				panic("not enough memory");
+				ipanic("not enough memory");
 			return 1;
 		}
 	}
@@ -853,7 +853,7 @@ static void
 _poolfault(void *v, char *msg, uintptr c)
 {
 	auditmemloc(msg, v);
-	panic("%s %lux (from %lux/%lux)", msg, v, getcallerpc(&v), c);
+	ipanic("%s %lux (from %lux/%lux)", msg, v, getcallerpc(&v), c);
 }
 
 static void

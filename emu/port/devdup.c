@@ -118,7 +118,7 @@ dupread(Chan *c, void *va, long n, vlong offset)
 		cclose(c);
 		return readstr((ulong)offset, va, n, buf);
 	}
-	panic("dupread");
+	ipanic("dupread");
 	return 0;
 }
 
@@ -126,7 +126,7 @@ static long
 dupwrite(Chan *c, void *a, long n, vlong o)
 {
 	USED(c); USED(a); USED(n); USED(o);
-	panic("dupwrite");
+	ipanic("dupwrite");
 	return 0;		/* not reached */
 }
 

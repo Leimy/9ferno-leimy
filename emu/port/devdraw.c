@@ -210,7 +210,7 @@ drawgen(Chan *c, char *name, Dirtab *tab, int x, int s, Dir *dp)
 			devdir(c, q, up->genbuf, 0, eve, 0500, dp);
 			break;
 		default:
-			panic("drawwalk %llux", c->qid.path);
+			ipanic("drawwalk %llux", c->qid.path);
 		}
 		return 1;
 	}
@@ -524,7 +524,7 @@ drawinstallscreen(Client *client, DScreen *d, int id, DImage *dimage, DImage *df
 
 	c = malloc(sizeof(CScreen));
 	if(dimage && dimage->image && dimage->image->chan == 0)
-		panic("bad image %p in drawinstallscreen", dimage->image);
+		ipanic("bad image %p in drawinstallscreen", dimage->image);
 
 	if(c == 0)
 		return 0;

@@ -372,7 +372,7 @@ mntchan(void)
 	unlock(&mntalloc.l);
 
 	if(c->mchan)
-		panic("mntchan non-zero %p", c->mchan);
+		ipanic("mntchan non-zero %p", c->mchan);
 	return c;
 }
 
@@ -790,10 +790,10 @@ mountio(Mnt *m, Mntrpc *r)
 
 	/* Transmit a file system rpc */
 	if(m->msize == 0)
-		panic("msize");
+		ipanic("msize");
 	n = convS2M(&r->request, r->rpc, m->msize);
 	if(n < 0)
-		panic("bad message type in mountio");
+		ipanic("bad message type in mountio");
 	if(devtab[m->c->type]->write(m->c, r->rpc, n, 0) != n)
 		error(Emountrpc);
 /*	r->stime = fastticks(nil); */
@@ -1029,7 +1029,7 @@ alloctag(void)
 				return (i<<TAGSHIFT) + j;
 			}
 	}
-	/* panic("no devmnt tags left"); */
+	/* ipanic("no devmnt tags left"); */
 	return NOTAG;
 }
 
@@ -1141,7 +1141,7 @@ mntchk(Chan *c)
 	/* This routine is mostly vestiges of prior lives; now it's just sanity checking */
 
 	if(c->mchan == nil)
-		panic("mntchk 1: nil mchan c %s\n", c2name(c));
+		ipanic("mntchk 1: nil mchan c %s\n", c2name(c));
 
 	m = c->mchan->mux;
 
@@ -1152,7 +1152,7 @@ mntchk(Chan *c)
 	 * Was it closed and reused (was error(Eshutdown); now, it can't happen)
 	 */
 	if(m->id == 0 || m->id >= c->dev)
-		panic("mntchk 3: can't happen");
+		ipanic("mntchk 3: can't happen");
 
 	return m;
 }

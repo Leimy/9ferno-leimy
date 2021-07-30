@@ -47,15 +47,15 @@ void
 checkb(Block *b, char *msg)
 {
 	if(b->base > b->lim)
-		panic("checkb 0 %s %lux %lux", msg, b->base, b->lim);
+		ipanic("checkb 0 %s %lux %lux", msg, b->base, b->lim);
 	if(b->rp < b->base)
-		panic("checkb 1 %s %lux %lux", msg, b->base, b->rp);
+		ipanic("checkb 1 %s %lux %lux", msg, b->base, b->rp);
 	if(b->wp < b->base)
-		panic("checkb 2 %s %lux %lux", msg, b->base, b->wp);
+		ipanic("checkb 2 %s %lux %lux", msg, b->base, b->wp);
 	if(b->rp > b->lim)
-		panic("checkb 3 %s %lux %lux", msg, b->rp, b->lim);
+		ipanic("checkb 3 %s %lux %lux", msg, b->rp, b->lim);
 	if(b->wp > b->lim)
-		panic("checkb 4 %s %lux %lux", msg, b->wp, b->lim);
+		ipanic("checkb 4 %s %lux %lux", msg, b->wp, b->lim);
 }
 
 void
@@ -116,7 +116,7 @@ padblock(Block *bp, int size)
 		}
 
 		if(bp->next)
-			panic("padblock 0x%luX", getcallerpc(&bp));
+			ipanic("padblock 0x%luX", getcallerpc(&bp));
 		n = BLEN(bp);
 		padblockoverhead += n;
 		nbp = allocb(size+n);
@@ -130,7 +130,7 @@ padblock(Block *bp, int size)
 		size = -size;
 
 		if(bp->next)
-			panic("padblock 0x%luX", getcallerpc(&bp));
+			ipanic("padblock 0x%luX", getcallerpc(&bp));
 
 		if(bp->lim - bp->wp >= size)
 			return bp;

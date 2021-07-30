@@ -186,7 +186,7 @@ pipestat(Chan *c, uchar *db, int n)
 		devdir(c, c->qid, tab[2].name, qlen(p->q[1]), eve, tab[2].perm, &dir);
 		break;
 	default:
-		panic("pipestat");
+		ipanic("pipestat");
 	}
 	n = convD2M(&dir, db, n);
 	if(n < BIT16SZ)
@@ -305,7 +305,7 @@ piperead(Chan *c, void *va, long n, vlong junk)
 	case Qdata1:
 		return qread(p->q[1], va, n);
 	default:
-		panic("piperead");
+		ipanic("piperead");
 	}
 	return -1;	/* not reached */
 }
@@ -360,7 +360,7 @@ pipewrite(Chan *c, void *va, long n, vlong junk)
 		break;
 
 	default:
-		panic("pipewrite");
+		ipanic("pipewrite");
 	}
 
 	poperror();
@@ -397,7 +397,7 @@ pipebwrite(Chan *c, Block *bp, ulong junk)
 
 	default:
 		n = 0;
-		panic("pipebwrite");
+		ipanic("pipebwrite");
 	}
 
 	poperror();

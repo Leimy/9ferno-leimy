@@ -175,7 +175,7 @@ printILL(int sig, siginfo_t *si, void *v)
 {
 	USED(sig);
 	USED(v);
-	panic("illegal instruction with code=%d at address=%p, opcode=%#x\n",
+	ipanic("illegal instruction with code=%d at address=%p, opcode=%#x\n",
 		si->si_code, si->si_addr, *(uchar*)si->si_addr);
 }
 
@@ -245,10 +245,10 @@ kproc(char *name, void (*func)(void*), void *arg, int flags)
 
 	p = newproc();
 	if(p == nil)
-		panic("kproc: no memory");
+		ipanic("kproc: no memory");
 	sem = malloc(sizeof(*sem));
 	if(sem == nil)
-		panic("can't allocate semaphore");
+		ipanic("can't allocate semaphore");
 	pthread_cond_init(&sem->c, NULL);
 	pthread_mutex_init(&sem->m, NULL);
 	sem->v = 0;
@@ -291,19 +291,19 @@ kproc(char *name, void (*func)(void*), void *arg, int flags)
 	unlock(&procs.l);
 
 	if(pthread_attr_init(&attr) == -1)
-		panic("pthread_attr_init failed");
+		ipanic("pthread_attr_init failed");
 
 	pthread_attr_setschedpolicy(&attr, SCHED_OTHER);
 	pthread_attr_setinheritsched(&attr, PTHREAD_INHERIT_SCHED);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
 	if(pthread_create(&thread, &attr, tramp, p))
-		panic("thr_create failed\n");
+		ipanic("thr_create failed\n");
 	pthread_attr_destroy(&attr);
 }
 
 int
-segflush(void *va, ulong len)
+segflush(void *va, u32 len)
 {
 	kern_return_t   err;
 	vm_machine_attribute_val_t value = MATTR_VAL_ICACHE_FLUSH;
@@ -402,7 +402,7 @@ osreboot(char *file, char **argv)
 	if(dflag == 0)
 		termrestore();
 	execvp(file, argv);
-	panic("reboot failure");
+	ipanic("reboot failure");
 }
 
 
@@ -444,7 +444,7 @@ libinit(char *imod)
 
 	p = newproc();
 	if(pthread_setspecific(prdakey, p))
-		panic("set specific thread data failed\n");
+		ipanic("set specific thread data failed\n");
 
 	pw = getpwuid(getuid());
 	if(pw != nil)

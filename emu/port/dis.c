@@ -132,14 +132,14 @@ newprog(Prog *p, Modlink *m)
 	n = malloc(sizeof(Prog)+sizeof(Osenv));
 	if(n == 0){
 		if(p == nil)
-			panic("no memory");
+			ipanic("no memory");
 		else
 			error(exNomem);
 	}
 
 	n->pid = ++pidnum;
 	if(n->pid <= 0)
-		panic("no pids");
+		ipanic("no pids");
 	n->group = nil;
 
 	if(isched.tail != nil) {
@@ -154,7 +154,7 @@ newprog(Prog *p, Modlink *m)
 
 	ph = pidlook(n->pid);
 	if(*ph != nil)
-		panic("dup pid");
+		ipanic("dup pid");
 	n->pidlink = nil;
 	*ph = n;
 
@@ -235,7 +235,7 @@ delprog(Prog *p, char *msg)
 
 	ph = pidlook(p->pid);
 	if(*ph == nil)
-		panic("lost pid");
+		ipanic("lost pid");
 	*ph = p->pidlink;
 
 	if(p == isched.runhd) {
@@ -335,7 +335,7 @@ exprog(Prog *p, char *exc)
 	case Pdebug:
 		return 0;
 	default:
-		panic("exprog - bad state 0x%x\n", p->state);
+		ipanic("exprog - bad state 0x%x\n", p->state);
 	}
 	if(p->state != Pready && p->state != Prelease)
 		addrun(p);
@@ -423,7 +423,7 @@ killprog(Prog *p, char *cause)
 	case Pdebug:
 		break;
 	default:
-		panic("killprog - bad state 0x%x\n", p->state);
+		ipanic("killprog - bad state 0x%x\n", p->state);
 	}
 
 	if(p->addrun != nil) {
@@ -576,7 +576,7 @@ killgrp(Prog *p, char *msg)
 	npid = 0;
 	for(f = g->head; f != nil; f = f->grpnext)
 		if(f->group != g)
-			panic("killgrp");
+			ipanic("killgrp");
 		else
 			npid++;
 	/* use pids not Prog* because state can change during killprog (eg, in delprog) */
@@ -641,7 +641,7 @@ addprog(Proc *p)
 
 	n = malloc(sizeof(Prog));
 	if(n == nil)
-		panic("no memory");
+		ipanic("no memory");
 	p->prog = n;
 	n->osenv = p->env;
 }
@@ -895,7 +895,7 @@ iyield(void)
 	isched.vmq = p->qnext;
 
 	if(up->iprog != nil)
-		panic("iyield but iprog, type %d", up->type);
+		ipanic("iyield but iprog, type %d", up->type);
 	if(up->type != Interp){
 		static int once;
 		if(!once++)
@@ -1026,7 +1026,7 @@ disfault(void *reg, char *msg)
 
 	p = currun();
 	if(p == nil)
-		panic("Interp faults with no dis prog");
+		ipanic("Interp faults with no dis prog");
 
 	/* cause an exception in the dis prog.  As for error(), but Plan 9 needs reg*/
 	kstrcpy(up->env->errstr, msg, ERRMAX);
@@ -1110,7 +1110,7 @@ disinit(void *a)
 	char *initmod = a;
 
 	if(waserror())
-		panic("disinit error: %r");
+		ipanic("disinit error: %r");
 
 	if(vflag)
 		print("Initial Dis: \"%s\"\n", initmod);
@@ -1127,7 +1127,7 @@ disinit(void *a)
 	root = load(initmod);
 	if(root == 0) {
 		kgerrstr(up->genbuf, sizeof up->genbuf);
-		panic("loading \"%s\": %s", initmod, up->genbuf);
+		ipanic("loading \"%s\": %s", initmod, up->genbuf);
 	}
 
 	p = schedmod(root);
@@ -1153,7 +1153,7 @@ void
 pushrun(Prog *p)
 {
 	if(p->addrun != nil)
-		panic("pushrun addrun");
+		ipanic("pushrun addrun");
 	p->state = Pready;
 	p->link = isched.runhd;
 	isched.runhd = p;
