@@ -1,6 +1,5 @@
-// If the macro in the lib9 include dir doesn't work, we're out of luck.
-	.file	"getcallerpc-MacOSX-386.s"
-    .text
+	.file	"getcallerpc-MacOSX-amd64.s"
+	.text
 .globl _getcallerpc
 _getcallerpc:
 	pushq   %rbp
